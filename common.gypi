@@ -3,7 +3,6 @@
     ["OS=='win'", {
           "target_defaults": {
             "default_configuration": "Release_x64",
-            "msbuild_toolset":"CTP_Nov2013",
             "msvs_settings": {
               "VCCLCompilerTool": {
                 "ExceptionHandling": 1, # /EHsc
