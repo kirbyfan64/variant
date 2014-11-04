@@ -14,17 +14,19 @@ install:
   # put 64 bit python on PATH / http://www.appveyor.com/docs/installed-software
   - if "%PLATFORM%" == "x64" SET PATH=C:\Python27-x64;%PATH%
   - if "%PLATFORM%" == "x86" SET PATH=c:\python27;%PATH%
-  - SET PATH=C:\Program Files (x86)\MSBuild\14.0\bin\;%PATH%
-  - call "%VS140COMNTOOLS%\..\..\vc\vcvarsall.bat"
+  - set MSBUILD_PLATFORM=%platform%
+  - if "%MSBUILD_PLATFORM%" == "x86" set MSBUILD_PLATFORM=Win32
   - git clone --quiet https://github.com/springmeyer/gyp.git deps/gyp -b msvs-2014
   # try without setting msvs_version=auto
   - python deps/gyp/gyp_main.py variant.gyp --depth=. -f msvs -G msvs_version=auto
+  - msbuild variant.sln /nologo /p:Configuration=%configuration%;Platform=%MSBUILD_PLATFORM%
+  - .\"%configuration%"\tests.exe
   # try without setting GYP_MSVS_VERSION=2014
   - python deps/gyp/gyp_main.py variant.gyp --depth=. -f msvs -G msvs_version=2014
+  - msbuild variant.sln /nologo /p:Configuration=%configuration%;Platform=%MSBUILD_PLATFORM%
+  - .\"%configuration%"\tests.exe
   - SET GYP_MSVS_VERSION=2014
   - python deps/gyp/gyp_main.py variant.gyp --depth=. -f msvs -G msvs_version=2014
-  - set MSBUILD_PLATFORM=%platform%
-  - if "%MSBUILD_PLATFORM%" == "x86" set MSBUILD_PLATFORM=Win32
   - msbuild variant.sln /nologo /p:Configuration=%configuration%;Platform=%MSBUILD_PLATFORM%
   - .\"%configuration%"\tests.exe
 
