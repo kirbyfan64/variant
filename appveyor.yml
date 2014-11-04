@@ -16,6 +16,8 @@ install:
   - if "%PLATFORM%" == "x86" SET PATH=c:\python27;%PATH%
   - set MSBUILD_PLATFORM=%platform%
   - if "%MSBUILD_PLATFORM%" == "x86" set MSBUILD_PLATFORM=Win32
+  - SET PATH=C:\Program Files (x86)\MSBuild\14.0\bin\;%PATH%
+  - call "%VS140COMNTOOLS%\..\..\vc\vcvarsall.bat"
   - git clone --quiet https://github.com/springmeyer/gyp.git deps/gyp -b msvs-2014
   # try without setting msvs_version=auto
   - python deps/gyp/gyp_main.py variant.gyp --depth=. -f msvs -G msvs_version=auto
